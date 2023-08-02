@@ -8,6 +8,7 @@ from dds_loader.dds_message_processor_job import DdsMessageProcessor
 from dds_loader.repository.dds_repository import DdsRepository
 app = Flask(__name__)
 
+ 
 
 # Заводим endpoint для проверки, поднялся ли сервис.
 # Обратиться к нему можно будет GET-запросом по адресу localhost:5000/health.
@@ -42,3 +43,4 @@ if __name__ == '__main__':
 
     # стартуем Flask-приложение.
     app.run(debug=True, host='0.0.0.0', use_reloader=False)
+ 

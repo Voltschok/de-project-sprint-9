@@ -41,10 +41,10 @@ class CdmMessageProcessor:
                 
                 user_id=message['user_id']
                 for product_id, product_name in zip(message['product_id_list'], message['product_name_list']):
-                    self._cdm_repository.cdm_insert('user_product', user_id, product_id, product_name, l1)
+                    self._cdm_repository.cdm_insert('user_product', user_id, product_id, product_name)
  
                 #user category count
                 for category_id, category_name in zip(message['category_id_list'], message['category_name_list']):
-                    self._cdm_repository.cdm_insert('user_category', category_id, category_name, product_name,  1)
+                    self._cdm_repository.cdm_insert('user_category', user_id, category_id, category_name)
  
             self._logger.info(f"{datetime.utcnow()}: CDM SEND")

@@ -9,13 +9,13 @@ image:
   repository: cr.yandex/crpt3el369nt59quedsc/dds_service 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v2023-08-01-r1
+  tag: v2023-08-02-r7
 
 containerPort: 5000
 
 config:
 
-  KAFKA_HOST: "rc1a-gcf3rldu2pohkvsk.mdb.yandexcloud.net"
+  KAFKA_HOST: "rc1a-fd7q2o9mic037tu8.mdb.yandexcloud.net"
   KAFKA_PORT: "9091"
   KAFKA_CONSUMER_USERNAME: "producer_consumer"
   KAFKA_CONSUMER_PASSWORD: "Rudyak1480"

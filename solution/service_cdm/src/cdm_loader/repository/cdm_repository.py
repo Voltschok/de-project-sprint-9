@@ -31,22 +31,23 @@ class CdmRepository:
                 cur.execute(f"Select * FROM cdm.{cdm}_counters LIMIT 0")
                 colnames = [desc[0] for desc in cur.description]
  
-        values_set=", ".join(['%('+colname+')s' for colname in colnames])
+        values_set=", ".join(['%('+colname+')s' for colname in colnames[1:-1]])
+        
+        self._logger.info(f"values_set: {values_set}")
 
-        params={col: val for col, val in zip(colnames, values_args)}
- 
+        params={col: val for col, val in zip(colnames[1:-1], values_args)}
+
+        self._logger.info(f"params: {params}")
+
         query=  f"""
-                    INSERT INTO cdm.{cdm}_counters(user_id, {pk}_id,{pk}_name)
-                    VALUES ({values_set})
+                    INSERT INTO cdm.{cdm}_counters(user_id, {pk}_id,{pk}_name, order_cnt)
+                    VALUES ({values_set}, 1)
                     ON CONFLICT (user_id, {pk}_id) DO UPDATE
-                    SET cdm.{cdm}_counters.order_cnt= CASE
-                    WHEN cdm.{cdm}_counters.order_cnt is null 
-                        THEN cdm.{cdm}_counters.order_cnt= 1
-                    WHEN cdm.{cdm}_counters.order_cnt is not null 
-                        THEN cdm.{cdm}_counters.order_cnt=cdm.{cdm}_counters.order_cnt+1
-                    END
-                        {pk}_name=EXCLUDED.{pk}_name
-
+                    
+                    SET 
+                        {pk}_name=EXCLUDED.{pk}_name, 
+                        order_cnt={cdm}_counters.order_cnt+1
+                    RETURNING order_cnt
                         
                 """
         self._logger.info(f"query: {query}")

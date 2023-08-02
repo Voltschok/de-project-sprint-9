@@ -6,7 +6,7 @@ from lib.pg import PgConnect
 
 class AppConfig:
     CERTIFICATE_PATH = '/crt/YandexInternalRootCA.crt'
-
+    DEFAULT_JOB_INTERVAL = 25
     def __init__(self) -> None:
 
         self.kafka_host = str(os.getenv('KAFKA_HOST'))
