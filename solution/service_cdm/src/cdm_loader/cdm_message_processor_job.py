@@ -3,17 +3,48 @@ from logging import Logger
 from uuid import UUID
 
 from lib.kafka_connect import KafkaConsumer
-
+from cdm_loader.repository.cdm_repository import CdmRepository
 
 class CdmMessageProcessor:
     def __init__(self,
-                 logger: Logger,
+                 consumer: KafkaConsumer,
+                 cdm_repository: CdmRepository,
+                 batch_size: int, 
+                 logger: Logger
                  ) -> None:
 
+        self._consumer=consumer
+        self._cdm_repository=cdm_repository
+        self._batch_size=batch_size
         self._logger = logger
-        self._batch_size = 100
 
     def run(self) -> None:
         self._logger.info(f"{datetime.utcnow()}: START")
 
         self._logger.info(f"{datetime.utcnow()}: FINISH")
+        load_dt=datetime.now()
+        load_src='dds-order-service'
+
+        i=0
+        while i< self._batch_size:
+            self._logger.info(f"{datetime.utcnow()}: {self._consumer}")
+            self._logger.info(f"{datetime.utcnow()}: {type(self._cdm_repository)}")
+        
+            message=self._consumer.consume()
+
+            self._logger.info(f"{datetime.utcnow()}: {message}")
+		
+            if message is None:
+                break
+            else:
+                #user product count
+                
+                user_id=message['user_id']
+                for product_id, product_name in zip(message['product_id_list'], message['product_name_list']):
+                    self._cdm_repository.cdm_insert('user_product', user_id, product_id, product_name, l1)
+ 
+                #user category count
+                for category_id, category_name in zip(message['category_id_list'], message['category_name_list']):
+                    self._cdm_repository.cdm_insert('user_category', category_id, category_name, product_name,  1)
+ 
+            self._logger.info(f"{datetime.utcnow()}: CDM SEND")

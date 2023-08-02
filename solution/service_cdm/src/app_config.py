@@ -14,7 +14,7 @@ class AppConfig:
         self.kafka_consumer_username = str(os.getenv('KAFKA_CONSUMER_USERNAME'))
         self.kafka_consumer_password = str(os.getenv('KAFKA_CONSUMER_PASSWORD'))
         self.kafka_consumer_group = str(os.getenv('KAFKA_CONSUMER_GROUP'))
-        self.kafka_consumer_topic = str(os.getenv('KAFKA_SOURCE_TOPIC'))
+        self.kafka_consumer_topic = str(os.getenv('KAFKA_DDS_SERVICE_ORDERS_TOPIC'))
         self.kafka_producer_username = str(os.getenv('KAFKA_CONSUMER_USERNAME'))
         self.kafka_producer_password = str(os.getenv('KAFKA_CONSUMER_PASSWORD'))
         self.kafka_producer_topic = str(os.getenv('KAFKA_DESTINATION_TOPIC'))

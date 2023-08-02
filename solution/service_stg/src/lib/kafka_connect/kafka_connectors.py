@@ -1,16 +1,8 @@
 import json
 from typing import Dict, Optional
- 
-from confluent_kafka import Consumer, Producer
-import json
-from uuid import UUID
 
-class UUIDEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, UUID):
-            # if the obj is uuid, we simply return the value of uuid
-            return obj.hex
-        return json.JSONEncoder.default(self, obj)
+from confluent_kafka import Consumer, Producer
+
 
 def error_callback(err):
     print('Something went wrong: {}'.format(err))
@@ -32,7 +24,7 @@ class KafkaProducer:
         self.p = Producer(params)
 
     def produce(self, payload: Dict) -> None:
-        self.p.produce(self.topic, json.dumps(payload, cls=UUIDEncoder, ensure_ascii=False))
+        self.p.produce(self.topic, json.dumps(payload))
         self.p.flush(10)
 
 

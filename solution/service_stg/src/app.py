@@ -4,8 +4,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 
 from app_config import AppConfig
-from dds_loader.dds_message_processor_job import DdsMessageProcessor
-from dds_loader.repository.dds_repository import DdsRepository
+from stg_loader.stg_message_processor_job import StgMessageProcessor
+from stg_loader.repository.stg_repository import StgRepository
 app = Flask(__name__)
 
 
@@ -26,11 +26,12 @@ if __name__ == '__main__':
 
     # Инициализируем процессор сообщений.
     # Пока он пустой. Нужен для того, чтобы потом в нем писать логику обработки сообщений из Kafka.
-    proc = DdsMessageProcessor(
+    proc = StgMessageProcessor(
     	
     	config.kafka_consumer(),
     	config.kafka_producer(), 
-	DdsRepository(config.pg_warehouse_db(), app.logger),
+	config.redis_client(),
+	StgRepository(config.pg_warehouse_db()),
 	100,
     	app.logger)
 

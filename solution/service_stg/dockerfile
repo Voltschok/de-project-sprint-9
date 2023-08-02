@@ -1,0 +1,45 @@
+# Воспользуемся официальным образом для запуска python.
+FROM python:3.10
+
+ARG KAFKA_HOST
+ARG KAFKA_PORT
+ARG KAFKA_USER
+ARG KAFKA_PASSWORD
+ARG KAFKA_SOURCE_TOPIC
+ARG KAFKA_STG_SERVICE_ORDERS_TOPIC
+ARG KAFKA_GROUP
+ 
+
+ARG POSTGRES_HOST
+ARG POSTGRES_PORT
+ARG POSTGRES_DB_NAME
+ARG POSTGRES_USERNAME
+ARG POSTGRES_PASSWORD
+
+ARG REDIS_HOST
+ARG REDIS_PORT
+ARG REDIS_PASSWORD
+ 
+
+# Обновим компоненты в контейнере.
+RUN apt-get update -y
+
+# Копируем все файлы в контейнер.
+COPY . .
+
+# Запускаем установку зависимостей.
+RUN pip install -r requirements.txt
+
+# Устанавливаем сертификат для подключения к ресурсам в Яндекс Облаке.
+RUN mkdir -p /crt
+RUN wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document /crt/YandexInternalRootCA.crt
+RUN chmod 0600 /crt/YandexInternalRootCA.crt
+
+# Переходим в директорию src
+WORKDIR /src
+
+# Говорим, что запускать будем python.
+ENTRYPOINT ["python"]
+
+# А именно, файл app.py в директории src.
+CMD ["app.py"]

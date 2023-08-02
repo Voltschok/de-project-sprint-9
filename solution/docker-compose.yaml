@@ -1,6 +1,38 @@
 version: "3.9"
 
 services:
+  stg-service:
+    build:
+      context: ./service_stg
+      network: host
+    image: stg_service:local
+    container_name: stg_service_container
+    environment:
+      FLASK_APP: ${SAMPLE_SERVICE_APP_NAME:-sample_service}
+      DEBUG: ${SAMPLE_SERVICE_DEBUG:-True}
+
+      KAFKA_HOST: ${KAFKA_HOST}
+      KAFKA_PORT: ${KAFKA_PORT}
+      KAFKA_CONSUMER_USERNAME: ${KAFKA_CONSUMER_USERNAME}
+      KAFKA_CONSUMER_PASSWORD: ${KAFKA_CONSUMER_PASSWORD}
+      KAFKA_CONSUMER_GROUP: ${KAFKA_CONSUMER_GROUP}
+      KAFKA_SOURCE_TOPIC: ${KAFKA_SOURCE_TOPIC}
+      KAFKA_DESTINATION_TOPIC: ${KAFKA_STG_SERVICE_ORDERS_TOPIC}
+
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    network_mode: "bridge"
+    ports:
+      - "5011:5000"
+    restart: unless-stopped
+    
   dds_service:
     build:
       context: ./service_dds
