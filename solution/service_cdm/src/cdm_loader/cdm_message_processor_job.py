@@ -38,7 +38,7 @@ class CdmMessageProcessor:
                 for category_id, category_name in zip(message['category_id_list'], message['category_name_list']):
                     self._cdm_repository.cdm_insert('user_category', user_id, category_id, category_name)
  		
-            self._logger.info(f"{datetime.utcnow()}: CDM SEND")
+            self._logger.info(f"{datetime.utcnow()}: CDM SENT")
             self._logger.info(f"{datetime.utcnow()}: FINISH")
             i+=1
 	
