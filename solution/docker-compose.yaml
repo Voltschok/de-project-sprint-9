@@ -8,8 +8,8 @@ services:
     image: stg_service:local
     container_name: stg_service_container
     environment:
-      FLASK_APP: ${SAMPLE_SERVICE_APP_NAME:-sample_service}
-      DEBUG: ${SAMPLE_SERVICE_DEBUG:-True}
+      FLASK_APP: ${STG_SERVICE_APP_NAME:-stg_service}
+      DEBUG: ${STG_SERVICE_DEBUG:-True}
 
       KAFKA_HOST: ${KAFKA_HOST}
       KAFKA_PORT: ${KAFKA_PORT}
