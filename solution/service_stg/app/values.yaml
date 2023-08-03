@@ -9,7 +9,7 @@ image:
   repository: cr.yandex/crpt3el369nt59quedsc/stg_service 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v2023-08-02-r6
+  tag: v2023-08-03-r12
 
 containerPort: 5000
 
@@ -18,21 +18,21 @@ config:
   KAFKA_HOST: "rc1a-fd7q2o9mic037tu8.mdb.yandexcloud.net"
   KAFKA_PORT: "9091"
   KAFKA_CONSUMER_USERNAME: "producer_consumer"
-  KAFKA_CONSUMER_PASSWORD: "Rudyak1480"
+   
   KAFKA_SOURCE_TOPIC: "order-service_orders"
   KAFKA_STG_SERVICE_ORDERS_TOPIC: "stg-service-orders"
   KAFKA_CONSUMER_GROUP: "main-consumer-group"
  
 
-  POSTGRES_HOST: "rc1b-ert1jvsw7igk9viu.mdb.yandexcloud.net"
-  POSTGRES_PORT: "6432"
-  POSTGRES_DB_NAME: "sprint9dwh"
-  POSTGRES_USERNAME: "voltschok"
-  POSTGRES_PASSWORD: "Rudyak1480"
+  PG_WAREHOUSE_HOST: "rc1b-ert1jvsw7igk9viu.mdb.yandexcloud.net"
+  PG_WAREHOUSE_PORT: "6432"
+  PG_WAREHOUSE_DBNAME: "sprint9dwh"
+  PG_WAREHOUSE_USER: "voltschok"
+   
 
   REDIS_HOST: "c-c9qb66at9tjl0f54a3mn.rw.mdb.yandexcloud.net"
   REDIS_PORT: "6380"
-  REDIS_PASSWORD: "Rudyak1480"
+  
 
 imagePullSecrets: []
 nameOverride: ""

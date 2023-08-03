@@ -9,7 +9,7 @@ image:
   repository: cr.yandex/crpt3el369nt59quedsc/cdm_service 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v2023-08-02-r8
+  tag: v2023-08-03-r12
 
 containerPort: 5000
 
@@ -18,7 +18,6 @@ config:
   KAFKA_HOST: "rc1a-fd7q2o9mic037tu8.mdb.yandexcloud.net"
   KAFKA_PORT: "9091"
   KAFKA_CONSUMER_USERNAME: "producer_consumer"
-  KAFKA_CONSUMER_PASSWORD: "Rudyak1480"
   KAFKA_STG_SERVICE_ORDERS_TOPIC: "stg-service-orders"
   KAFKA_DDS_SERVICE_ORDERS_TOPIC: "dds-service-orders"
   KAFKA_CONSUMER_GROUP: "main-consumer-group"
@@ -28,7 +27,7 @@ config:
   PG_WAREHOUSE_PORT: "6432"
   PG_WAREHOUSE_DBNAME: "sprint9dwh"
   PG_WAREHOUSE_USER: "voltschok"
-  PG_WAREHOUSE_PASSWORD: "Rudyak1480"
+  
 
  
 

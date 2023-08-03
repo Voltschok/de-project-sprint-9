@@ -18,13 +18,8 @@ class DdsRepository:
                             *args: list
  
                             ) -> None:
-        
-       
+                             
         values_args=list(args)
-        #values_args.append(datetime.now())
-        #values_args.append('stg-order-service')
- 
-
         with self._db.connection() as conn:
             with conn.cursor() as cur:
 
@@ -57,8 +52,6 @@ class DdsRepository:
                             ) -> None:
 
         values_args=list(args)
-       #values_args.append(datetime.now())
-        #values_args.append('stg-order-service')
 
         with self._db.connection() as conn:
             with conn.cursor() as cur:
@@ -91,9 +84,9 @@ class DdsRepository:
                             ) -> None:
         values_args=list(args)
         pk=(sattelite.split("_"))[0]
-       #values_args.append(datetime.now())
-        #values_args.append('stg-order-service')
+
         self._logger.info(f"values_args: {values_args}")
+                             
         with self._db.connection() as conn:
             with conn.cursor() as cur:
 

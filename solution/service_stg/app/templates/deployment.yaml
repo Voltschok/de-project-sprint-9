@@ -31,6 +31,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "app.fullname" . }}-config
+            - secretRef:
+                name: env-stg-secrets
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}

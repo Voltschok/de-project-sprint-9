@@ -25,11 +25,11 @@ class AppConfig:
         self.redis_port = int(str(os.getenv('REDIS_PORT')) or 0)
         self.redis_password = str(os.getenv('REDIS_PASSWORD') or "")
 
-        self.pg_warehouse_host = str(os.getenv('POSTGRES_HOST') or "")
-        self.pg_warehouse_port = int(str(os.getenv('POSTGRES_PORT') or 0))
-        self.pg_warehouse_dbname = str(os.getenv('POSTGRES_DB_NAME') or "")
-        self.pg_warehouse_user = str(os.getenv('POSTGRES_USERNAME') or "")
-        self.pg_warehouse_password = str(os.getenv('POSTGRES_PASSWORD') or "")
+        self.pg_warehouse_host = str(os.getenv('PG_WAREHOUSE_HOST') or "")
+        self.pg_warehouse_port = int(str(os.getenv('PG_WAREHOUSE_PORT') or 0))
+        self.pg_warehouse_dbname = str(os.getenv('PG_WAREHOUSE_DBNAME') or "")
+        self.pg_warehouse_user = str(os.getenv('PG_WAREHOUSE_USER') or "")
+        self.pg_warehouse_password = str(os.getenv('PG_WAREHOUSE_PASSWORD') or "")
 
     def kafka_producer(self):
         return KafkaProducer(

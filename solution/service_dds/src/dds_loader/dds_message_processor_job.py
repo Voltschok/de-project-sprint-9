@@ -26,8 +26,7 @@ class DdsMessageProcessor:
         # Пишем в лог, что джоб был запущен.
         self._logger.info(f"{datetime.utcnow()}: START")
              
-        load_dt=datetime.now()
-        load_src='stg-order-service'
+
 
         i=0
         while i< self._batch_size:
@@ -39,6 +38,9 @@ class DdsMessageProcessor:
             if message is None:
                 break
             else:
+                load_dt=datetime.now()
+                load_src='stg-order-service'    
+		    
                 category_list=[product['category'] for product in message['payload']['products']]
                 products_id_list=[product['id'] for product in message['payload']['products']]
                 products_name_list=[product['name'] for product in message['payload']['products']]
@@ -68,7 +70,7 @@ class DdsMessageProcessor:
                     self._dds_repository.hubs_insert('product', h_product_pk, product_id, load_dt, load_src)
                     self._logger.info(f"{datetime.utcnow()}: POSTGRES_HUB_PRODUCT FINISHED")
 
-                #product name dictionary for output message
+                #product name dictionary for product_names_sattelite
                 product_pk_name_dict=dict(zip(h_product_pk_list, products_name_list))
                 
                 #category hub
@@ -81,29 +83,21 @@ class DdsMessageProcessor:
  
                 #order_product link
                 for h_product_pk in h_product_pk_list:  
-                    self._logger.info(f"h_product_pk: {h_product_pk}")
                     hk_order_product_pk=uuid.uuid3(uuid.NAMESPACE_DNS, str(h_order_pk)+str(h_product_pk))
-                    self._logger.info(f"hk_order_product_pk: {hk_order_product_pk}")
                     self._dds_repository.links_insert('order_product', hk_order_product_pk, h_order_pk, h_product_pk, load_dt, load_src)
                     
                 #product_category link
-                for h_product_pk, h_category_pk in zip(h_product_pk_list, h_category_pk_list):  #zip(h_object_pk_dict['h_product_pk'], h_object_pk_dict['h_category_pk']):
-                    self._logger.info(f"h_product_pk: {h_product_pk}, h_category_pk: {h_category_pk}  ")
+                for h_product_pk, h_category_pk in zip(h_product_pk_list, h_category_pk_list):   
                     hk_product_category_pk=uuid.uuid3(uuid.NAMESPACE_DNS, str(h_product_pk)+str(h_category_pk))
-                    self._logger.info(f"hk_product_category_pk: {hk_product_category_pk}")
                     self._dds_repository.links_insert('product_category', hk_product_category_pk, h_product_pk, h_category_pk, load_dt, load_src)
 
                 #order_user link
-                self._logger.info(f"h_user_pk: {h_user_pk}")
                 hk_order_user_pk=uuid.uuid3(uuid.NAMESPACE_DNS, str(h_order_pk)+str(h_user_pk))
-                self._logger.info(f"hk_order_user_pk: {hk_order_user_pk}")
                 self._dds_repository.links_insert('order_user', hk_order_user_pk, h_order_pk, h_user_pk, load_dt, load_src)
 
                 #product_restaurant link
                 for h_product_pk in h_product_pk_list:  
-                    self._logger.info(f"h_product_pk: {h_product_pk}")
                     hk_product_restaurant_pk=uuid.uuid3(uuid.NAMESPACE_DNS,str(h_product_pk)+ str(h_restaurant_pk))
-                    self._logger.info(f"hk_product_restaurant_pk: {hk_product_restaurant_pk}")
                     self._dds_repository.links_insert('product_restaurant', hk_product_restaurant_pk, h_product_pk, h_restaurant_pk, load_dt, load_src)
 
                 self._logger.info(f"{datetime.utcnow()}: POSTGRES_LINKS  FINISHED")
@@ -114,8 +108,6 @@ class DdsMessageProcessor:
 
                 hk_order_cost_hashdiff=uuid.uuid3(uuid.NAMESPACE_DNS,                     
                                              str(h_order_pk)+str(cost)+str(payment)+(load_dt).strftime('%Y-%m-%d %H:%M:%S')+load_src  )
-                
-                self._logger.info(f"hk_order_hashdiff: {hk_order_cost_hashdiff}")
                 self._dds_repository.sattelite_insert('order_cost', h_order_pk, cost, payment, load_dt, load_src, hk_order_cost_hashdiff)
                 
 
@@ -129,20 +121,15 @@ class DdsMessageProcessor:
 
                 #'product_names sattelite'     
                 for h_product_pk in h_product_pk_list: 
-                    self._logger.info(f"h_product_pk: {h_product_pk}")
                     product_name=product_pk_name_dict[h_product_pk] 
                     hk_product_names_hashdiff=uuid.uuid3(uuid.NAMESPACE_DNS,                     
                                              str(h_product_pk)+str(product_name)+(load_dt).strftime('%Y-%m-%d %H:%M:%S')+load_src)
-                
-                    self._logger.info(f"hk_product_names_hashdiff: {hk_product_names_hashdiff}")
                     self._dds_repository.sattelite_insert('product_names', h_product_pk, product_name,   load_dt, load_src, hk_product_names_hashdiff)
                                  
                 #'restaurant_names sattelite' 
                 restaurant_name=message['payload']['restaurant']['name']
                 hk_restaurant_names_hashdiff=uuid.uuid3(uuid.NAMESPACE_DNS,                     
                                              str(h_restaurant_pk)+str(restaurant_name)+(load_dt).strftime('%Y-%m-%d %H:%M:%S')+load_src  )
-                
-                self._logger.info(f"hk_restaurant_names_hashdiff: {hk_restaurant_names_hashdiff}")
                 self._dds_repository.sattelite_insert('restaurant_names', h_restaurant_pk, restaurant_name,   load_dt, load_src, hk_restaurant_names_hashdiff)                     
                 
                 # 'user_names sattelite'
@@ -150,8 +137,6 @@ class DdsMessageProcessor:
                 userlogin=message['payload']['user']['id']
                 hk_user_names_hashdiff=uuid.uuid3(uuid.NAMESPACE_DNS,                     
                                              str(h_user_pk)+str(username)+str(userlogin)+(load_dt).strftime('%Y-%m-%d %H:%M:%S')+load_src  )
-                
-                self._logger.info(f"hk_user_names_hashdiff: {hk_user_names_hashdiff}")
                 self._dds_repository.sattelite_insert('user_names', h_user_pk, username, userlogin,  load_dt, load_src, hk_user_names_hashdiff)                 
  
 
