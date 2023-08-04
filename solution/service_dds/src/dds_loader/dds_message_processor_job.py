@@ -157,8 +157,8 @@ class DdsMessageProcessor:
                 self._logger.info(f"{datetime.utcnow()}: OUTPUT MESSAGE SEND")
    
             i+=1
-                # Имитация работы. Здесь будет реализована обработка сообщений.
-        time.sleep(2)
+
+        
 
         # Пишем в лог, что джоб успешно завершен.
         self._logger.info(f"{datetime.utcnow()}: FINISH")
